@@ -5,14 +5,24 @@ Tested this on Gardena Sileno City, but should work on all Gardena/Husqvarna mow
 # Configuration for Gardena/Husqvarna mower data 
 * [Setup Domoticz with MQTT server](https://www.domoticz.com/wiki/MQTT)
 * [Install Python3 on your Domoticz server](https://www.domoticz.com/wiki/Using_Python_plugins)
+  * Ensure you have Websocket and Paho packages installed (if not you'll come accross some errors when running the script!)
+  * _Errors when running the script_
+  * ModuleNotFoundError: No module named 'websocket'
+    **Solution: sudo pip3 install websocket**
+  * ModuleNotFoundError: No module named 'paho'
+    **Solution: pip3 install paho-mqtt**
+  * Note: Since we're running Python 3, use pip3 (not pip)
 * [Create account for Gardena API and generate API Key](https://developer.husqvarnagroup.cloud/)
-* Create 3 dummy devices in Domoticz:
+* Create 3 dummy devices in Domoticz and note down the IDX's:
   * Battery: Percentage (DOMOTICZ_MOWER_RFLINK_IDX)
   * Status: Text (DOMOTICZ_MOWER_STATUS_IDX)
   * Connectivity: Percentage (DOMOTICZ_MOWER_RFLINK_IDX)
-* Edit the gardena.py and edit the variables listed, make sure the MQTT is pointing to the right IP (default: Localhost). 
+* Edit the gardena.py and edit the variables listed, make sure the MQTT is pointing to the right IP (default: Localhost) and port (default: 1883). 
 * Run the script:  ``` python3 gardena.py```
-* Check if the dummy devices receive the correct values, if not, make sure your variables are all set correctly. 
+* Check if the dummy devices receive the correct values, 
+  * if not, some hints; 
+  * make sure your variables are all set correctly.
+  * remove # before # websocket.enableTrace(True) and run the script again to see the request and response results to get indication of your problem
 
 # Configuration for Gardena mower control
 * [Setup Domoticz with MQTT server](https://www.domoticz.com/wiki/MQTT)
