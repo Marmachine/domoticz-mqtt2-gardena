@@ -1,4 +1,5 @@
 import websocket
+import datetime
 from threading import Thread
 import time
 import sys
@@ -28,20 +29,32 @@ mqtt_client.connect(DOMOTICZ_MQTT,DOMOTICZ_MQTT_PORT,60)
 mqtt_client.loop_start()
 
 class Client:
-    def on_message(self, message):
-        print("msg", message)        
+    def on_message(self, ws, message):
+        x = datetime.datetime.now()
+        print("msg ", x.strftime("%H:%M:%S,%f"))
         mqtt_parse(message)
+        print(message)
         sys.stdout.flush()
 
-    def on_error(self, error):
-        print("error", error)
+    def on_error(self, ws, error):
+        x = datetime.datetime.now()
+        print("error ", x.strftime("%H:%M:%S,%f"))
+        print(error)
 
-    def on_close(self):
+    def on_close(self, ws, close_status_code, close_msg):
         self.live = False
+        x = datetime.datetime.now()
+        print("closed ", x.strftime("%H:%M:%S,%f"))
         print("### closed ###")
+        if close_status_code:
+            print("status code: "+close_status_code)
+        if close_msg:
+            print("status message: "+close_msg)
         sys.exit(0)
 
-    def on_open(self):
+    def on_open(self, ws):
+        x = datetime.datetime.now()
+        print("connected ", x.strftime("%H:%M:%S,%f"))
         print("### connected ###")
 
         self.live = True
